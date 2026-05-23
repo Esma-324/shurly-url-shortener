@@ -1,0 +1,122 @@
+<%- include('partials/header') %>
+
+  <main class="container">
+    <section class="page-head">
+      <h1 class="page-title">Admin Panel</h1>
+      <p class="page-sub">Tüm kullanıcıların genel analizlerini ve kullanıcı bazlı URL geçmişlerini tek ekrandan görüntüleyin.</p>
+    </section>
+
+    <div class="search-card">
+      <div class="input-wrap">
+        <input id="adminSearchInput" type="search" placeholder="Grafik, kaynak, tarayıcı, lokasyon, kullanıcı veya URL ara..." autocomplete="off">
+      </div>
+      <button type="button" class="btn-primary" id="adminSearchClear">Temizle</button>
+    </div>
+
+    <div class="panel admin-search-target" data-search-label="tıklama grafiği grafik trend">
+      <div class="panel-head">
+        <h3 class="panel-title">Tüm Kullanıcılar Tıklama Grafiği</h3>
+        <span class="muted small">Son 14 gün</span>
+      </div>
+      <div class="chart-wrap admin-chart-wrap"><canvas id="adminTrendChart"></canvas></div>
+    </div>
+
+    <div class="two-col">
+      <div class="panel admin-search-target" data-search-label="yönlendiren kaynaklar referrer kaynak">
+        <h3 class="panel-title">Yönlendiren Kaynaklar</h3>
+        <div class="ref-chart-wrap">
+          <div id="aRefDonut" class="ref-donut" aria-hidden="true">
+            <div class="ref-donut-center">
+              <div id="aRefTotal" class="ref-total">0</div>
+              <div class="ref-total-label">Toplam</div>
+            </div>
+          </div>
+        </div>
+        <ul id="aReferrers" class="ref-legend"></ul>
+      </div>
+      <div class="panel admin-search-target" data-search-label="tarayıcı browser user agent en sık tarayıcılar">
+        <h3 class="panel-title">En Sık Tarayıcılar</h3>
+        <ul id="aUserAgents" class="kv-list"></ul>
+      </div>
+    </div>
+
+    <div class="panel locations-panel admin-search-target" data-search-label="top lokasyonlar harita ülke lokasyon">
+      <h3 class="panel-title">Top Lokasyonlar</h3>
+      <div class="locations-grid">
+        <ul id="aLocations" class="locations-list"></ul>
+        <div class="locations-map" aria-hidden="true">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg"
+            alt="Dünya haritası"
+            loading="lazy"
+            referrerpolicy="no-referrer"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="stat-grid four">
+      <div class="stat-card">
+        <div class="stat-label">Toplam URL</div>
+        <div class="stat-value" id="aTotalUrls">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Toplam Tıklama</div>
+        <div class="stat-value" id="aTotalClicks">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Bugün</div>
+        <div class="stat-value" id="a24h">-</div>
+      </div>
+      <div class="stat-card highlight">
+        <div class="stat-label">Son 7 Gün</div>
+        <div class="stat-value" id="a7d">-</div>
+      </div>
+    </div>
+
+    <div class="panel admin-search-target" data-search-label="kullanıcılar kullanıcı listesi tablo">
+      <div class="panel-head">
+        <h3 class="panel-title">Kullanıcılar</h3>
+        <span class="muted small">Kullanıcıya tıklayınca URL geçmişi aşağıda açılır</span>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Kullanıcı</th>
+              <th class="num">URL</th>
+              <th class="num">Tıklama</th>
+              <th>Kayıt</th>
+            </tr>
+          </thead>
+          <tbody id="aUsers"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel admin-search-target" data-search-label="kullanıcı url geçmişi geçmiş kısa kod hedef">
+      <div class="panel-head">
+        <h3 class="panel-title" id="aUserDetailTitle">Kullanıcı URL Geçmişi</h3>
+        <span class="muted small" id="aUserDetailSummary">Bir kullanıcı seçin</span>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Kısa Kod</th>
+              <th>Hedef</th>
+              <th class="num">Tıklama</th>
+              <th>Oluşturulma</th>
+            </tr>
+          </thead>
+          <tbody id="aHistory"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script src="/static/js/main.js?v=20260507"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="/static/js/admin.js?v=20260510-06"></script>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,98 @@
+<%- include('partials/header') %>
+
+  <main class="container history-page">
+    <section class="page-head">
+      <h1 class="page-title">Geçmiş URL'ler</h1>
+      <p class="page-sub">Daha önce kısalttığın linkleri buradan düzenleyebilir veya silebilirsin.</p>
+    </section>
+
+    <div id="historyRoot" data-user-email="<%= currentUser ? currentUser.email : '' %>"></div>
+
+    <form class="search-card" id="historySearchForm">
+      <div class="input-wrap">
+        <input
+          type="text"
+          id="historySearchInput"
+          placeholder="Kısa kod, kısa URL veya uzun URL ara..."
+          autocomplete="off"
+        />
+      </div>
+      <button type="button" id="historyClearBtn" class="btn-tertiary">Temizle</button>
+    </form>
+
+    <section id="recentSection" class="result-card recent-card hidden">
+      <div class="result-head">
+        <span class="result-pill">Kayıtlar</span>
+        <span class="result-time" id="recentCount"></span>
+      </div>
+      <div class="result-body">
+        <ul id="recentList" class="recent-list"></ul>
+        <div id="historyPagination" class="history-pagination hidden">
+          <button type="button" id="historyPrevBtn" class="btn-tertiary">Önceki</button>
+          <span id="historyPageInfo" class="history-page-info"></span>
+          <button type="button" id="historyNextBtn" class="btn-tertiary">Sonraki</button>
+        </div>
+      </div>
+    </section>
+
+    <div id="historyEmpty" class="empty-state">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="20" x2="18" y2="10"></line>
+        <line x1="12" y1="20" x2="12" y2="4"></line>
+        <line x1="6" y1="20" x2="6" y2="14"></line>
+      </svg>
+      <h3>Henüz geçmiş kayıt yok</h3>
+      <p>Anasayfadan URL kısalttıkça burada listelenecek.</p>
+    </div>
+  </main>
+
+  <div id="editModal" class="modal-overlay hidden" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="editModalTitle">
+      <div class="modal-head">
+        <h3 id="editModalTitle">Kısa URL Düzenle</h3>
+        <button type="button" id="editModalClose" class="icon-btn" title="Kapat">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <p class="modal-sub">Yeni kısa kodu gir. Sadece harf, rakam, `-` ve `_` kullanılabilir.</p>
+      <form id="editModalForm" class="modal-form">
+        <div class="input-wrap modal-input-wrap">
+          <span class="input-prefix">/</span>
+          <input type="text" id="editModalInput" maxlength="32" placeholder="yeni-kod" required />
+        </div>
+        <div class="modal-actions">
+          <button type="button" id="editModalCancel" class="btn-tertiary">Vazgeç</button>
+          <button type="submit" class="btn-primary modal-save-btn">
+            <span>Kaydet</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="deleteModal" class="modal-overlay hidden" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+      <div class="modal-head">
+        <h3 id="deleteModalTitle">Kısa URL Sil</h3>
+        <button type="button" id="deleteModalClose" class="icon-btn" title="Kapat">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <p class="modal-sub">Bu işlem geri alınamaz. Seçilen kısa URL kalıcı olarak silinecek.</p>
+      <div class="modal-actions">
+        <button type="button" id="deleteModalCancel" class="btn-tertiary">Vazgeç</button>
+        <button type="button" id="deleteModalConfirm" class="btn-primary modal-danger-btn">Sil</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/main.js?v=20260507-2"></script>
+  <script src="/static/js/history.js?v=20260510-3"></script>
+
+<%- include('partials/footer') %>

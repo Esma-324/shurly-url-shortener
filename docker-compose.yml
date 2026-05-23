@@ -1,0 +1,79 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: shurly_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: urlshortener
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d urlshortener"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    container_name: shurly_redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "6379:6379"
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: shurly_backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      HOST: 0.0.0.0
+      PORT: 8080
+      BASE_URL: http://localhost:8080
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/urlshortener
+      REDIS_URL: redis://redis:6379
+      RATE_LIMIT_PER_MINUTE: 60
+      SHORT_CODE_LENGTH: 7
+      CACHE_TTL_SECONDS: 3600
+      RUST_LOG: info,sqlx=warn,actix_web=info
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: shurly_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      PORT: 3000
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/urlshortener
+      # Sunucudan sunucuya iletisim icin Docker DNS uzerinden
+      BACKEND_URL: http://backend:8080
+      # Tarayicidan dogrudan erisilecek backend URL'i (kisa link prefix'i)
+      PUBLIC_BACKEND_URL: http://localhost:8080
+    ports:
+      - "3000:3000"
+
+volumes:
+  pg_data:
+  redis_data:

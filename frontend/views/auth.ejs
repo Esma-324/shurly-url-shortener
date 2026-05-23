@@ -1,0 +1,172 @@
+<%- include('partials/header') %>
+
+<main class="auth-main">
+  <div class="auth-bg" aria-hidden="true"></div>
+  <div class="auth-bg-overlay" aria-hidden="true"></div>
+
+  <section class="auth-card-modal">
+    <div class="auth-card-head">
+      <span class="brand-mark sm auth-icon-mark" aria-hidden="true">
+        <svg class="auth-icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+        </svg>
+      </span>
+      <h1><%= mode === 'login' ? 'Hoş geldin' : 'Aramıza Katıl' %></h1>
+      <p><%= mode === 'login' ? 'Devam etmek için giriş yap' : 'Yeni bir hesap oluştur' %></p>
+    </div>
+
+    <div class="auth-tabs">
+      <a href="/login" class="<%= mode === 'login' ? 'active' : '' %>">Giriş</a>
+      <a href="/register" class="<%= mode === 'register' ? 'active' : '' %>">Kayıt Ol</a>
+    </div>
+
+    <% if (errorMessage) { %>
+      <div class="auth-msg error"><%= errorMessage %></div>
+    <% } %>
+    <% if (successMessage) { %>
+      <div class="auth-msg success"><%= successMessage %></div>
+    <% } %>
+    <% if (mode === 'login') { %>
+      <form method="post" action="/auth/login" class="auth-form">
+        <div class="field">
+          <label for="email">E-posta</label>
+          <div class="input-wrap with-ico">
+            <span class="ico" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+            </span>
+            <input id="email" name="email" type="email" placeholder="örnek@mail.com" autocomplete="email" readonly data-manual-autofill="true" required />
+          </div>
+        </div>
+        <div class="field">
+          <label for="password">Şifre</label>
+          <div class="input-wrap with-ico has-toggle">
+            <span class="ico" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </span>
+            <input id="password" name="password" type="password" placeholder="******" autocomplete="current-password" readonly data-manual-autofill="true" required />
+            <button type="button" class="pw-toggle" data-target="password" aria-label="Şifreyi göster">
+              <svg class="eye-open" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              <svg class="eye-closed" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a21.77 21.77 0 0 1 5.06-5.94"></path>
+                <path d="M9.9 4.24A10.94 10.94 0 0 1 12 5c7 0 11 7 11 7a21.8 21.8 0 0 1-3.17 4.19"></path>
+                <path d="M1 1l22 22"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary">Giriş Yap</button>
+        <p class="auth-note">
+          Hesabın yok mu? <a href="/register">Kayıt ol</a>
+        </p>
+      </form>
+    <% } else { %>
+      <form method="post" action="/auth/register" class="auth-form">
+        <div class="field">
+          <label for="email">E-posta</label>
+          <div class="input-wrap with-ico">
+            <span class="ico" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+            </span>
+            <input id="email" name="email" type="email" placeholder="örnek@mail.com" autocomplete="email" readonly data-manual-autofill="true" required />
+          </div>
+        </div>
+        <div class="field">
+          <label for="password">Şifre</label>
+          <div class="input-wrap with-ico has-toggle">
+            <span class="ico" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </span>
+            <input id="password" name="password" type="password" placeholder="en az 6 karakter" autocomplete="new-password" readonly data-manual-autofill="true" required />
+            <button type="button" class="pw-toggle" data-target="password" aria-label="Şifreyi göster">
+              <svg class="eye-open" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              <svg class="eye-closed" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a21.77 21.77 0 0 1 5.06-5.94"></path>
+                <path d="M9.9 4.24A10.94 10.94 0 0 1 12 5c7 0 11 7 11 7a21.8 21.8 0 0 1-3.17 4.19"></path>
+                <path d="M1 1l22 22"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="passwordAgain">Şifre Tekrar</label>
+          <div class="input-wrap with-ico has-toggle">
+            <span class="ico" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </span>
+            <input id="passwordAgain" name="passwordAgain" type="password" placeholder="şifreyi tekrar yaz" autocomplete="new-password" readonly data-manual-autofill="true" required />
+            <button type="button" class="pw-toggle" data-target="passwordAgain" aria-label="Şifreyi göster">
+              <svg class="eye-open" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              <svg class="eye-closed" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a21.77 21.77 0 0 1 5.06-5.94"></path>
+                <path d="M9.9 4.24A10.94 10.94 0 0 1 12 5c7 0 11 7 11 7a21.8 21.8 0 0 1-3.17 4.19"></path>
+                <path d="M1 1l22 22"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary">Kaydol</button>
+        <p class="auth-note">
+          Zaten hesabın var mı? <a href="/login">Giriş yap</a>
+        </p>
+      </form>
+    <% } %>
+  </section>
+</main>
+
+<script>
+  (function () {
+    function enableManualAutofill(input) {
+      if (!input || !input.hasAttribute('readonly')) return;
+      input.removeAttribute('readonly');
+    }
+
+    document.querySelectorAll('input[data-manual-autofill="true"]').forEach(function (input) {
+      input.addEventListener('pointerdown', function () {
+        enableManualAutofill(input);
+      }, { once: true });
+      input.addEventListener('focus', function () {
+        enableManualAutofill(input);
+      }, { once: true });
+    });
+
+    var toggles = document.querySelectorAll('.pw-toggle');
+    toggles.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var targetId = btn.getAttribute('data-target');
+        var input = document.getElementById(targetId);
+        if (!input) return;
+        var isHidden = input.type === 'password';
+        input.type = isHidden ? 'text' : 'password';
+        btn.classList.toggle('is-visible', isHidden);
+        btn.setAttribute('aria-label', isHidden ? 'Şifreyi gizle' : 'Şifreyi göster');
+      });
+    });
+  })();
+</script>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,164 @@
+<%- include('partials/header') %>
+
+  <main
+    class="container stats-page"
+    id="statsRoot"
+    data-user-email="<%= currentUser ? currentUser.email : '' %>"
+    data-public-base-url="<%= publicBackendUrl %>"
+  >
+    <section class="page-head">
+      <h1 class="page-title">URL İstatistikleri</h1>
+      <p class="page-sub">Kısa kodu girerek tıklamaların detayını görün.</p>
+    </section>
+
+    <div id="personalOverview" class="panel stats-overview hidden">
+      <h3 class="panel-title">Genel İstatistik Özeti</h3>
+      <div class="stat-grid stats-overview-grid">
+        <div class="stat-card">
+          <div class="stat-label">Kayıtlı URL</div>
+          <div class="stat-value" id="ovUrls">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Toplam Tıklama</div>
+          <div class="stat-value" id="ovClicks">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">En Popüler Link</div>
+          <div class="stat-value sm stats-popular" id="ovPopular">-</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Bugünkü Tıklama</div>
+          <div class="stat-value" id="ovTodayClicks">0</div>
+        </div>
+      </div>
+      <div class="panel-head">
+        <h4 class="panel-title" id="ovTrendTitle">Günlük Tıklanma Trendi (Tümü)</h4>
+        <span class="muted small" id="ovTrendCaption">Son 14 gün</span>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="ovTrendChart" height="120"></canvas>
+      </div>
+    </div>
+
+    <form id="statsForm" class="search-card">
+      <div class="input-wrap">
+        <span class="input-prefix">/</span>
+        <input type="text" id="codeInput" name="code" required
+               placeholder="kısa-kod"
+               value="<%= initialCode %>" />
+      </div>
+      <button type="submit" class="btn-primary">Göster</button>
+    </form>
+
+    <div id="statsBody" class="stats-body hidden">
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-label">Toplam Tıklama</div>
+          <div class="stat-value" id="sTotal">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Bugün</div>
+          <div class="stat-value" id="s24h">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Oluşturulma</div>
+          <div class="stat-value sm" id="sCreated">-</div>
+        </div>
+        <div class="stat-card highlight">
+          <div class="stat-label">Kısa Link</div>
+          <div class="stat-value sm">
+            <a id="sShort" href="#" target="_blank" rel="noopener" class="grad-text">-</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="long-row">
+        <span class="lbl">Yönlendiriyor:</span>
+        <a id="sLong" href="#" target="_blank" rel="noopener" class="long-link">-</a>
+      </div>
+
+      <div class="panel qr-panel">
+        <div class="panel-head">
+          <h3 class="panel-title">QR Kod</h3>
+          <a id="sQrDownload" class="btn-secondary" href="#" download>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            SVG indir
+          </a>
+        </div>
+        <div class="qr-frame center">
+          <img id="sQr" alt="QR kod" />
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="panel">
+          <h3 class="panel-title">Yönlendiren Kaynaklar</h3>
+          <div class="ref-chart-wrap">
+            <div id="sRefDonut" class="ref-donut" aria-hidden="true">
+              <div class="ref-donut-center">
+                <div id="sRefTotal" class="ref-total">0</div>
+                <div class="ref-total-label">Toplam</div>
+              </div>
+            </div>
+          </div>
+          <ul id="sReferrers" class="ref-legend"></ul>
+        </div>
+        <div class="panel">
+          <h3 class="panel-title">En sık tarayıcılar</h3>
+          <ul id="sUserAgents" class="kv-list"></ul>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3 class="panel-title">Son tıklamalar</h3>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Zaman</th>
+                <th>IP</th>
+                <th>Tarayıcı</th>
+                <th>Referrer</th>
+              </tr>
+            </thead>
+            <tbody id="sClicks"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel locations-panel">
+        <h3 class="panel-title">Top Lokasyonlar</h3>
+        <div class="locations-grid">
+          <ul id="sLocations" class="locations-list"></ul>
+          <div class="locations-map" aria-hidden="true">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg"
+              alt="Dünya haritası"
+              loading="lazy"
+              referrerpolicy="no-referrer"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="statsEmpty" class="empty-state">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="20" x2="18" y2="10"></line>
+        <line x1="12" y1="20" x2="12" y2="4"></line>
+        <line x1="6" y1="20" x2="6" y2="14"></line>
+      </svg>
+      <h3>Bir kısa kod girin</h3>
+      <p>Örnek: anasayfada kısalttığınız URL'in koduyla istatistiklerine ulaşabilirsiniz.</p>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="/static/js/main.js?v=20260507"></script>
+  <script src="/static/js/stats.js?v=20260510-03"></script>
+
+<%- include('partials/footer') %>
