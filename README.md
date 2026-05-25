@@ -17,6 +17,7 @@
 
 - [Özellikler](#özellikler)
 - [Mimari](#mimari)
+- [Ekran görüntüleri](#ekran-görüntüleri)
 - [Hızlı başlangıç](#hızlı-başlangıç)
 - [API özeti](#api-özeti)
 - [Yerel geliştirme](#yerel-geliştirme)
@@ -39,6 +40,25 @@
 | **Ölçek** | Redis TTL cache, atomic tıklama sayacı |
 | **DevOps** | Tek komutla Docker Compose (Postgres + Redis + API + UI) |
 | **Benchmark** | `wrk` + Lua senaryoları (`bench/`) |
+
+---
+
+## Ekran görüntüleri
+
+| # | Dosya | Açıklama | Görsel |
+|---|-------|----------|--------|
+| 1 | `01-landing.png` | Landing / ana sayfa | <img src="repo/docs/screenshots/01-landing.png" width="220" alt="Landing sayfası"> |
+| 2 | `ana sayfa.png` | Hero alanı ve başlangıç ekranı | <img src="repo/docs/screenshots/ana%20sayfa.png" width="220" alt="Ana sayfa"> |
+| 3 | `giriş.png` | Kullanıcı giriş ekranı | <img src="repo/docs/screenshots/giri%C5%9F.png" width="220" alt="Giriş ekranı"> |
+| 4 | `kayıt olma.png` | Yeni kullanıcı kayıt ekranı | <img src="repo/docs/screenshots/kay%C4%B1t%20olma.png" width="220" alt="Kayıt ekranı"> |
+| 5 | `istatistik.png` | Boş istatistik dashboard görünümü | <img src="repo/docs/screenshots/istatistik.png" width="220" alt="Boş istatistik ekranı"> |
+| 6 | `geçmiş.png` | Geçmiş URL listesi / CRUD ekranı | <img src="repo/docs/screenshots/ge%C3%A7mi%C5%9F.png" width="220" alt="Geçmiş URL ekranı"> |
+| 7 | `dolu istatistik.png` | Demo verilerle dolu istatistik ekranı | <img src="repo/docs/screenshots/dolu%20istatistik.png" width="220" alt="Dolu istatistik ekranı"> |
+| 8 | `detay istatistik.png` | Tek link detay analitiği | <img src="repo/docs/screenshots/detay%20istatistik.png" width="220" alt="Detay istatistik ekranı"> |
+| 9 | `link dağılımı nereden gelmiş.png` | Referrer ve tarayıcı dağılımı | <img src="repo/docs/screenshots/link%20da%C4%9F%C4%B1l%C4%B1m%C4%B1%20nereden%20gelmi%C5%9F.png" width="220" alt="Link dağılımı ekranı"> |
+| 10 | `mobil görünüm.png` | 375 px responsive mobil görünüm | <img src="repo/docs/screenshots/mobil%20g%C3%B6r%C3%BCn%C3%BCm.png" width="220" alt="Mobil görünüm"> |
+| 11 | `404.png` | Hata durumu / 404 ekranı | <img src="repo/docs/screenshots/404.png" width="220" alt="404 hata ekranı"> |
+| 12 | `02-dashboard.png` | Admin dashboard / analitik görünümü | <img src="repo/docs/screenshots/02-dashboard.png" width="220" alt="Admin dashboard"> |
 
 ---
 
